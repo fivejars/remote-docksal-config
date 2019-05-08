@@ -42,13 +42,9 @@ if [[ ! -d ~/.docksal/commands ]]; then
 fi
 
 cd ~/.docksal/commands
-# Check that user has access to fivejars/fj-docksal-commands repository
-echo-green "Check access to remote repository"
-git ls-remote git@bitbucket.org:fivejars/fj-docksal-commands.git
-
 # Clone commands to fj directory (Commands Group).
 echo-green "Load commands from remote repository"
-git clone git@bitbucket.org:fivejars/fj-docksal-commands.git fj
+git clone https://github.com/fivejars/remote-docksal-config.git fj
 
 echo-green-bg "Installation completed!"
 
