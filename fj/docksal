@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+## Add a Docksal for existing project.
+##
+## Usage: fin fj/docksal [project name]
+## Run from project root
+
+# Abort if anything fails
+set -e
+
+#-------------------------------- Settings -------------------------------------
+
+PROJECT_ROOT=$(pwd)
+PROJECT_NAME=$1
+GIT_REMOTE="git@bitbucket.org:fivejars/${PROJECT_NAME}-docksal.git"
+
+#----------------------------- END: Settings -----------------------------------
+
+#---------------------------- Helper functions ---------------------------------
+
+# Console colors
+red='\033[0;31m'
+green='\033[0;32m'
+green_bg='\033[42m'
+yellow='\033[1;33m'
+NC='\033[0m'
+
+echo-red () { echo -e "${red}$1${NC}"; }
+echo-green () { echo -e "${green}$1${NC}"; }
+echo-green-bg () { echo -e "${green_bg}$1${NC}"; }
+echo-yellow () { echo -e "${yellow}$1${NC}"; }
+
+#-------------------------- END: Helper functions ------------------------------
+
+#------------------------------- Functions -------------------------------------
+
+# Initialize local settings files
+load_docksal ()
+{
+  # Check that user has access to fivejars/fj-docksal-commands repository
+  echo-green "Check access to remote repository"
+  git ls-remote ${GIT_REMOTE}
+
+  # Clone commands to fj directory (Commands Group).
+  echo-green "Load commands from remote repository"
+  cd ${PROJECT_ROOT}
+  git clone ${GIT_REMOTE} .docksal
+}
+
+#----------------------------- END: Functions ----------------------------------
+
+#------------------------------- Execution -------------------------------------
+echo-green-bg "Add a Docksal for [$PROJECT_NAME] project."
+
+if [[ -z "$PROJECT_NAME" ]]; then
+  echo-red "Error: Please specify project name: fin fj/docksal [project name]"
+  exit 1
+fi
+
+if [[ -d "$PROJECT_ROOT/.docksal" ]]; then
+  echo-green ".docksal already exist in this project, pull updates."
+  cd "$PROJECT_ROOT/.docksal"
+  git pull
+else
+  echo-green "Load docksal for specified project"
+  load_docksal
+fi
+
+echo-green-bg "Installation completed!"
+#----------------------------- END: Execution ----------------------------------
