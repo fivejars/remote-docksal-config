@@ -19,7 +19,7 @@ This script will download global commands to `~/.docksal/commands` directory
 Go to project root and run this command:
 
 ```bash
-fin fj/docksal [project name]
+fin fj/docksal [project name] [branch name:optional]
 ```
 
 This command will download appropriate `.docksal` directory to project root directory.
